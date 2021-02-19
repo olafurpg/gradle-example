@@ -1,6 +1,35 @@
-plugins {
-    id 'java'
+import javax.inject.Inject
+import java.nio.charset.StandardCharsets
+import java.nio.file.Files
+import java.nio.file.StandardOpenOption;
+
+class CustomTaskUsingToolchains extends DefaultTask {
+
+    @Input
+    final Property<JavaLauncher> launcher = project.objects.property(JavaLauncher.class);
+
+    @Inject
+    CustomTaskUsingToolchains(ObjectFactory factory) {
+        // Access the default toolchain
+        def toolchain = project.getExtensions().getByType(JavaPluginExtension.class).toolchain
+
+        // acquire a provider that returns the launcher for the toolchain
+        JavaToolchainService service = project.getExtensions().getByType(JavaToolchainService.class);
+        Provider<JavaLauncher> defaultLauncher = service.launcherFor(toolchain);
+
+        // use it as our default for the property
+        launcher.convention(defaultLauncher);
+    }
+
+    @TaskAction
+    def showConfiguredToolchain() {
+        println launcher.get().executablePath
+        println launcher.get().metadata.installationPath
+    }
 }
+
+apply plugin: 'java'
+task showToolchain(type: CustomTaskUsingToolchains)
 
 java {
     toolchain {
@@ -8,12 +37,14 @@ java {
     }
 }
 
-task showDefaultToolchain {
-    tasks.withType(JavaCompile).configureEach {
-        javaCompiler = javaToolchains.compilerFor {
-            languageVersion = JavaLanguageVersion.of(12)
-        }
+allprojects {
+  gradle.projectsEvaluated {
+    boolean isJavaEnabled = project.plugins.any {
+       it.getClass().getName().endsWith("org.gradle.api.plugins.JavaPlugin")
     }
+    if (!isJavaEnabled) return
+    tasks.withType(JavaCompile) {
+        StandardCharsets
+    }
+  }
 }
-
-
