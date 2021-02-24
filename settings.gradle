@@ -1,5 +1,5 @@
 rootProject.name = 'basic-multiproject'
 include 'j8'
-include 'j9'
+include 'j11'
 
 
