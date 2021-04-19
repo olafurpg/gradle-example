@@ -1,3 +1,4 @@
+println gradle.gradleVersion
 allprojects {
   apply plugin: 'java'
   java {
