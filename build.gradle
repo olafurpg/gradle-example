@@ -1,19 +1,20 @@
-allprojects {
-  apply plugin: 'java'
-  java {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
-        toolchain {
-            languageVersion = JavaLanguageVersion.of(8)
-        }
+// 1
+buildscript {
+    // 2
+    repositories {
+        google()
+        jcenter()
     }
-    tasks.withType(JavaCompile) {
-        options.compilerArgs << "-Xlint:-options"
-        options.encoding = 'UTF-8'
-        options.fork = true
-        options.forkOptions.setMemoryMaximumSize("4g")
-        options.incremental = true
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+    // 3
+    dependencies {
+        classpath 'com.android.tools.build:gradle:4.1.0'
+    }
+}
+
+// 4
+allprojects {
+    repositories {
+        google()
+        jcenter()
     }
 }
