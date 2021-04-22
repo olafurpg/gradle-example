@@ -1,3 +1,5 @@
 package example;
 
-public class Example {}
+public class Example {
+  // int x = "";
+}
