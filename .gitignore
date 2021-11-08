@@ -6,12 +6,6 @@ semanticdb-targetroot/
 .gradle
 eclipsebin
 
-bin
-gen
-build
-out
-lib
-generated
 
 target
 pom.xml.*
